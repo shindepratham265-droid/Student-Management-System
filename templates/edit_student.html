@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Edit Student — Student Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="page-header">
+            <i class="bi bi-pencil-square me-2"></i>Edit Student
+        </h1>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="form-card">
+            <form method="POST"
+                  action="{{ url_for('edit_student', student_id=student.student_id) }}"
+                  novalidate>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <!-- Student ID (read-only) -->
+                <div class="mb-3">
+                    <label for="student_id" class="form-label">Student ID</label>
+                    <input type="text" class="form-control" id="student_id"
+                           value="{{ student.student_id }}" readonly disabled>
+                    <div class="form-text">Student ID cannot be changed.</div>
+                </div>
+
+                <!-- Full Name -->
+                <div class="mb-3">
+                    <label for="full_name" class="form-label">
+                        Full Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="full_name"
+                           name="full_name"
+                           value="{{ request.form.get('full_name', student.full_name) }}"
+                           required>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        Email Address <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" class="form-control" id="email"
+                           name="email"
+                           value="{{ request.form.get('email', student.email) }}"
+                           required>
+                </div>
+
+                <!-- Department -->
+                <div class="mb-3">
+                    <label for="department" class="form-label">
+                        Department <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="department"
+                           name="department"
+                           value="{{ request.form.get('department', student.department) }}"
+                           required>
+                </div>
+
+                <!-- Academic Year -->
+                <div class="mb-3">
+                    <label for="academic_year" class="form-label">
+                        Academic Year <span class="text-danger">*</span>
+                    </label>
+                    {% set current_year = request.form.get('academic_year', student.academic_year) %}
+                    <select class="form-select" id="academic_year" name="academic_year" required>
+                        <option value="" disabled>Select Academic Year</option>
+                        {% for year in ['1st Year', '2nd Year', '3rd Year', '4th Year'] %}
+                            <option value="{{ year }}"
+                                {{ 'selected' if current_year == year }}>
+                                {{ year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('view_students') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

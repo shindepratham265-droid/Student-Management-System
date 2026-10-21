@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Student Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="page-header">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </h1>
+    </div>
+</div>
+
+<!-- Statistics Card -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card dashboard-card text-center">
+            <div class="card-body">
+                <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
+                <div class="stat-number mt-2">{{ total_students }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <a href="{{ url_for('view_students') }}" class="quick-link-card">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="bi bi-list-ul text-primary" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">View Students</h5>
+                    <p class="text-muted mb-0">Browse all student records</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a href="{{ url_for('add_student') }}" class="quick-link-card">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-plus-fill text-success" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">Add Student</h5>
+                    <p class="text-muted mb-0">Register a new student</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a href="{{ url_for('view_students') }}?search=" class="quick-link-card">
+            <div class="card dashboard-card">
+                <div class="card-body text-center">
+                    <i class="bi bi-search text-info" style="font-size: 2rem;"></i>
+                    <h5 class="mt-3">Search Students</h5>
+                    <p class="text-muted mb-0">Find students by ID or Name</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
