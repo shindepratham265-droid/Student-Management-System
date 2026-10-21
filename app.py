@@ -5,9 +5,10 @@ A simple web application to manage student records using Firebase Firestore.
 
 import os
 import re
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_wtf.csrf import CSRFProtect
 from dotenv import load_dotenv
+from prometheus_flask_exporter import PrometheusMetrics
 from firebase_config import initialize_firebase
 
 # Load environment variables from .env file
@@ -20,8 +21,24 @@ app.secret_key = os.getenv("SECRET_KEY", "change-this-to-a-random-secret-key")
 # Enable CSRF protection
 csrf = CSRFProtect(app)
 
+# ── Prometheus Metrics Setup ─────────────────────────────────────────────────
+# Automatically tracks HTTP request latency, counts, and exports at /metrics
+metrics = PrometheusMetrics(app)
+metrics.info("app_info", "Student Management System", version="1.0.0")
+
 # ── Firebase Initialization ──────────────────────────────────────────────────
 db, firebase_error = initialize_firebase()
+
+
+# ── Health Endpoint ──────────────────────────────────────────────────────────
+@app.route("/health")
+def health():
+    """Health check endpoint for Docker, Prometheus, and CI/CD probes."""
+    return jsonify({
+        "status": "healthy",
+        "service": "student-management-system",
+        "firebase_connected": firebase_error is None
+    }), 200
 
 
 # ── Helper Functions ─────────────────────────────────────────────────────────

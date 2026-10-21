@@ -5,9 +5,13 @@ env/
 # Environment variables
 .env
 
-# Firebase credentials
-*.json
-!package.json
+# Firebase credentials (keep private)
+*firebase*.json
+studentmanagementsystem-*.json
+serviceAccountKey*.json
+
+# Pytest cache
+.pytest_cache/
 
 # Python cache
 __pycache__/

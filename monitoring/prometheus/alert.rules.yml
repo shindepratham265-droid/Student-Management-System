@@ -1,0 +1,20 @@
+groups:
+  - name: student_app_alerts
+    rules:
+      - alert: AppDown
+        expr: up{job="student-app"} == 0
+        for: 15s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Student Management System instance is DOWN"
+          description: "Container web:5000 has been unreachable for more than 15 seconds."
+
+      - alert: HighRequestLatency
+        expr: flask_http_request_duration_seconds_bucket{le="1.0"} == 0
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Latency Detected on Student App"
+          description: "Requests are taking longer than 1 second to respond."
